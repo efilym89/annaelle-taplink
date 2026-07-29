@@ -1,0 +1,55 @@
+<!-- Annaelle Taplink: вставьте код целиком в блок T123 -->
+<div id="annaelle-taplink-host">
+  <iframe
+    id="annaelle-taplink-frame"
+    title="Annaelle — студия лазерной эпиляции"
+    src="https://efilym89.github.io/annaelle-taplink/"
+    loading="eager"
+    allow="clipboard-write"
+  ></iframe>
+</div>
+
+<style>
+  #rec {
+    overflow: visible;
+  }
+
+  #annaelle-taplink-host {
+    position: relative;
+    left: 50%;
+    width: 100vw;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    transform: translateX(-50%);
+    background: #fef7fb;
+  }
+
+  #annaelle-taplink-frame {
+    display: block;
+    width: 100%;
+    height: 100vh;
+    min-height: 100vh;
+    margin: 0;
+    padding: 0;
+    border: 0;
+    overflow: hidden;
+    background: #fef7fb;
+  }
+</style>
+
+<script>
+  (function () {
+    var frame = document.getElementById("annaelle-taplink-frame");
+    if (!frame) return;
+
+    function updateHeight() {
+      var viewportHeight = window.innerHeight || document.documentElement.clientHeight;
+      frame.style.height = Math.max(viewportHeight, 720) + "px";
+    }
+
+    updateHeight();
+    window.addEventListener("resize", updateHeight);
+    window.addEventListener("orientationchange", updateHeight);
+  })();
+</script>
