@@ -273,20 +273,48 @@
     text-align: center;
     text-decoration: none !important;
     -webkit-tap-highlight-color: transparent;
+    -webkit-user-select: none;
+    user-select: none;
+    touch-action: manipulation;
+    isolation: isolate;
     transition:
-      transform 180ms ease,
       box-shadow 180ms ease,
-      background 180ms ease;
+      background 180ms ease,
+      border-color 180ms ease,
+      filter 180ms ease;
     animation: aeButtonReveal 470ms calc(110ms + var(--ae-order, 0) * 65ms) both;
   }
 
   #annaelle-t123 .ae-petal::before {
     position: absolute;
-    inset: 0;
+    z-index: 0;
+    top: -38%;
+    bottom: -38%;
+    left: -44%;
+    width: 34%;
     content: "";
-    background: linear-gradient(115deg, rgba(255, 255, 255, 0.2), transparent 45%);
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.62), transparent);
     opacity: 0;
-    transition: opacity 180ms ease;
+    pointer-events: none;
+    transform: translateX(-170%) skewX(-17deg);
+    transition:
+      transform 560ms cubic-bezier(0.2, 0.76, 0.24, 1),
+      opacity 180ms ease;
+  }
+
+  #annaelle-t123 .ae-petal::after {
+    position: absolute;
+    z-index: 0;
+    top: var(--ae-tap-y, 50%);
+    left: var(--ae-tap-x, 50%);
+    width: 16px;
+    height: 16px;
+    content: "";
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.5);
+    opacity: 0;
+    pointer-events: none;
+    transform: translate(-50%, -50%) scale(0.2);
   }
 
   #annaelle-t123 .ae-petal > span {
@@ -294,6 +322,8 @@
     z-index: 1;
     display: block;
     font: inherit;
+    pointer-events: none;
+    transform-origin: center;
   }
 
   #annaelle-t123 .ae-petal-address,
@@ -307,21 +337,52 @@
     font-weight: 500;
   }
 
-  #annaelle-t123 .ae-petal:hover,
   #annaelle-t123 .ae-petal:focus-visible {
     box-shadow:
       0 17px 36px rgba(55, 45, 47, 0.13),
       inset 0 1px 0 rgba(255, 255, 255, 0.32);
-    transform: translateY(-2px);
+    filter: brightness(1.035) saturate(1.04);
   }
 
-  #annaelle-t123 .ae-petal:hover::before,
   #annaelle-t123 .ae-petal:focus-visible::before {
-    opacity: 1;
+    opacity: 0.75;
+    transform: translateX(430%) skewX(-17deg);
   }
 
+  #annaelle-t123 .ae-petal.is-pressed,
   #annaelle-t123 .ae-petal:active {
-    transform: scale(0.985);
+    border-color: rgba(255, 255, 255, 0.72);
+    box-shadow:
+      0 8px 20px rgba(82, 63, 68, 0.12),
+      inset 0 2px 9px rgba(91, 75, 79, 0.11),
+      inset 0 1px 0 rgba(255, 255, 255, 0.52);
+    filter: brightness(1.04) saturate(1.05);
+  }
+
+  #annaelle-t123 .ae-petal.is-pressed::before {
+    animation: aePetalSheen 580ms cubic-bezier(0.2, 0.76, 0.24, 1) both;
+  }
+
+  #annaelle-t123 .ae-petal.is-pressed::after {
+    animation: aePetalPulse 560ms cubic-bezier(0.16, 0.72, 0.22, 1) both;
+  }
+
+  #annaelle-t123 .ae-petal.is-pressed > span {
+    animation: aePetalLabel 420ms cubic-bezier(0.2, 0.78, 0.24, 1) both;
+  }
+
+  @media (hover: hover) and (pointer: fine) {
+    #annaelle-t123 .ae-petal:hover {
+      box-shadow:
+        0 17px 36px rgba(55, 45, 47, 0.13),
+        inset 0 1px 0 rgba(255, 255, 255, 0.38);
+      filter: brightness(1.035) saturate(1.04);
+    }
+
+    #annaelle-t123 .ae-petal:hover::before {
+      opacity: 0.75;
+      transform: translateX(430%) skewX(-17deg);
+    }
   }
 
   #annaelle-t123 .ae-petal:focus-visible,
@@ -493,6 +554,43 @@
     }
   }
 
+  @keyframes aePetalSheen {
+    0% {
+      opacity: 0;
+      transform: translateX(-170%) skewX(-17deg);
+    }
+    28% {
+      opacity: 0.78;
+    }
+    100% {
+      opacity: 0;
+      transform: translateX(560%) skewX(-17deg);
+    }
+  }
+
+  @keyframes aePetalPulse {
+    0% {
+      opacity: 0.46;
+      transform: translate(-50%, -50%) scale(0.2);
+    }
+    100% {
+      opacity: 0;
+      transform: translate(-50%, -50%) scale(28);
+    }
+  }
+
+  @keyframes aePetalLabel {
+    0%, 100% {
+      transform: none;
+    }
+    38% {
+      transform: scale(0.965);
+    }
+    72% {
+      transform: scale(1.012);
+    }
+  }
+
   @media (min-width: 620px) {
     #annaelle-t123 .ae-content {
       --ae-page-gutter: 30px;
@@ -575,6 +673,8 @@
           class="ae-petal"
           style="--ae-order: 0"
           href="tel:+998781223682"
+          target="_top"
+          data-ae-phone
           aria-label="Позвонить в студию Annaelle"
         ><span>Позвонить</span></a>
 
@@ -635,6 +735,10 @@
           href="https://yandex.ru/profile/238400073401?lang=ru"
           target="_blank"
           rel="noopener noreferrer"
+          data-ae-yandex-destination
+          data-ae-lat="41.291156"
+          data-ae-lon="69.260916"
+          data-ae-name="Annaelle, ул. Шота Руставели д. 33"
           aria-label="ул. Шота Руставели д. 33, открыть в Яндекс Картах"
         ><span>ул. Шота Руставели д. 33</span></a>
 
@@ -644,6 +748,10 @@
           href="https://yandex.ru/maps/-/CPsO6W40"
           target="_blank"
           rel="noopener noreferrer"
+          data-ae-yandex-destination
+          data-ae-lat="41.296655"
+          data-ae-lon="69.341244"
+          data-ae-name="Annaelle, ул. Карасу д. 31"
           aria-label="ул. Карасу д. 31, открыть в Яндекс Картах"
         ><span>ул. Карасу д. 31</span></a>
       </div>
@@ -677,6 +785,8 @@
           data-map-src="https://yandex.ru/map-widget/v1/?ll=69.260916%2C41.291156&amp;z=16&amp;pt=69.260916%2C41.291156%2Cpm2rdm"
           data-map-link="https://yandex.ru/profile/238400073401?lang=ru"
           data-map-title="Annaelle, ул. Шота Руставели д. 33"
+          data-map-lat="41.291156"
+          data-map-lon="69.260916"
         >ул. Шота Руставели д. 33</button>
 
         <button
@@ -689,6 +799,8 @@
           data-map-src="https://yandex.ru/map-widget/v1/?ll=69.341244%2C41.296655&amp;z=16&amp;pt=69.341244%2C41.296655%2Cpm2rdm"
           data-map-link="https://yandex.ru/maps/-/CPsO6W40"
           data-map-title="Annaelle, ул. Карасу д. 31"
+          data-map-lat="41.296655"
+          data-map-lon="69.341244"
         >ул. Карасу д. 31</button>
       </div>
 
@@ -708,6 +820,10 @@
         target="_blank"
         rel="noopener noreferrer"
         data-ae-map-link
+        data-ae-yandex-destination
+        data-ae-lat="41.291156"
+        data-ae-lon="69.260916"
+        data-ae-name="Annaelle, ул. Шота Руставели д. 33"
       >Открыть выбранный адрес в Яндекс Картах</a>
 
       <p class="ae-copyright">
@@ -728,6 +844,132 @@
 
 <script>
   (function () {
+    function isMobileDevice() {
+      var userAgent = window.navigator.userAgent || "";
+      var iPadOS = window.navigator.platform === "MacIntel" && window.navigator.maxTouchPoints > 1;
+      return /Android|iPhone|iPad|iPod/i.test(userAgent) || iPadOS;
+    }
+
+    function navigateTop(url) {
+      try {
+        if (window.top && window.top !== window) {
+          window.top.location.href = url;
+        } else {
+          window.location.href = url;
+        }
+      } catch (error) {
+        window.location.href = url;
+      }
+    }
+
+    function bindPetalFeedback(root) {
+      var petals = root.querySelectorAll(".ae-petal");
+
+      Array.prototype.forEach.call(petals, function (petal) {
+        function playFeedback(event) {
+          if (typeof event.button === "number" && event.button !== 0) return;
+
+          var rect = petal.getBoundingClientRect();
+          var point = event.touches && event.touches[0] ? event.touches[0] : event;
+          var x = typeof point.clientX === "number" ? point.clientX - rect.left : rect.width / 2;
+          var y = typeof point.clientY === "number" ? point.clientY - rect.top : rect.height / 2;
+
+          petal.style.setProperty("--ae-tap-x", Math.max(0, Math.min(rect.width, x)) + "px");
+          petal.style.setProperty("--ae-tap-y", Math.max(0, Math.min(rect.height, y)) + "px");
+          petal.classList.remove("is-pressed");
+          void petal.offsetWidth;
+          petal.classList.add("is-pressed");
+
+          window.clearTimeout(petal.aePressTimer);
+          petal.aePressTimer = window.setTimeout(function () {
+            petal.classList.remove("is-pressed");
+          }, 640);
+        }
+
+        if (window.PointerEvent) {
+          petal.addEventListener("pointerdown", playFeedback, { passive: true });
+        } else {
+          petal.addEventListener("touchstart", playFeedback, { passive: true });
+          petal.addEventListener("mousedown", playFeedback, { passive: true });
+        }
+
+        petal.addEventListener("click", function (event) {
+          if (event.detail === 0) playFeedback(event);
+        });
+      });
+    }
+
+    function bindPhoneLink(root) {
+      var phoneLink = root.querySelector("[data-ae-phone]");
+      if (!phoneLink) return;
+
+      phoneLink.addEventListener("click", function (event) {
+        event.preventDefault();
+        event.stopPropagation();
+        navigateTop(phoneLink.getAttribute("href"));
+      });
+    }
+
+    function bindYandexDestinations(root) {
+      var links = root.querySelectorAll("[data-ae-yandex-destination]");
+
+      Array.prototype.forEach.call(links, function (link) {
+        link.addEventListener("click", function (event) {
+          if (!isMobileDevice()) return;
+
+          var latitude = link.getAttribute("data-ae-lat");
+          var longitude = link.getAttribute("data-ae-lon");
+          var webUrl = link.getAttribute("href");
+          if (!latitude || !longitude || !webUrl) return;
+
+          event.preventDefault();
+          event.stopPropagation();
+
+          var navigatorUrl = "yandexnavi://build_route_on_map?lat_to=" + encodeURIComponent(latitude) +
+            "&lon_to=" + encodeURIComponent(longitude);
+          var mapsUrl = "yandexmaps://maps.yandex.ru/?ll=" + encodeURIComponent(longitude + "," + latitude) +
+            "&z=17&pt=" + encodeURIComponent(longitude + "," + latitude + ",pm2rdm");
+          var stopped = false;
+          var timers = [];
+
+          // Browsers cannot enumerate installed apps. Leaving the page stops the fallback chain.
+          function cleanup() {
+            document.removeEventListener("visibilitychange", onVisibilityChange, false);
+            window.removeEventListener("pagehide", stop, false);
+            Array.prototype.forEach.call(timers, function (timer) {
+              window.clearTimeout(timer);
+            });
+          }
+
+          function stop() {
+            if (stopped) return;
+            stopped = true;
+            cleanup();
+          }
+
+          function onVisibilityChange() {
+            if (document.hidden) stop();
+          }
+
+          document.addEventListener("visibilitychange", onVisibilityChange, false);
+          window.addEventListener("pagehide", stop, false);
+
+          navigateTop(navigatorUrl);
+
+          timers.push(window.setTimeout(function () {
+            if (stopped || document.hidden) return;
+            navigateTop(mapsUrl);
+
+            timers.push(window.setTimeout(function () {
+              if (stopped || document.hidden) return;
+              stop();
+              navigateTop(webUrl);
+            }, 1050));
+          }, 900));
+        });
+      });
+    }
+
     function initAnnaelleT123() {
       var root = document.getElementById("annaelle-t123");
       if (!root || root.getAttribute("data-ae-ready") === "true") return;
@@ -736,6 +978,10 @@
 
       var record = root.closest(".r") || root.closest(".t-rec");
       if (record) record.classList.add("ae-t123-record");
+
+      bindPetalFeedback(root);
+      bindPhoneLink(root);
+      bindYandexDestinations(root);
 
       var map = root.querySelector("#ae-studio-map");
       var mapLink = root.querySelector("[data-ae-map-link]");
@@ -756,6 +1002,9 @@
 
           if (mapLink) {
             mapLink.href = tab.getAttribute("data-map-link");
+            mapLink.setAttribute("data-ae-lat", tab.getAttribute("data-map-lat"));
+            mapLink.setAttribute("data-ae-lon", tab.getAttribute("data-map-lon"));
+            mapLink.setAttribute("data-ae-name", tab.getAttribute("data-map-title"));
           }
         });
       });
