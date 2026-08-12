@@ -359,6 +359,17 @@
     font-weight: 500;
   }
 
+  #annaelle-t123 [data-ae-phone].is-phone-confirmed {
+    --ae-button-background: rgba(183, 122, 136, 0.92);
+    --ae-button-foreground: #fff;
+    border-color: rgba(255, 255, 255, 0.68);
+  }
+
+  #annaelle-t123 [data-ae-phone].is-phone-confirmed > span {
+    font-size: 14px;
+    font-weight: 500;
+  }
+
   #annaelle-t123 .ae-petal:focus-visible {
     box-shadow:
       0 17px 36px rgba(55, 45, 47, 0.13),
@@ -697,6 +708,7 @@
           href="tel:+998781223682"
           target="_top"
           data-ae-phone
+          data-ae-phone-display="+998 78 122 36 82"
           aria-label="Позвонить в студию Annaelle"
         ><span>Позвонить</span></a>
 
@@ -921,15 +933,83 @@
       });
     }
 
+    function copyText(text) {
+      function legacyCopy() {
+        var input = document.createElement("textarea");
+        input.value = text;
+        input.setAttribute("readonly", "");
+        input.style.position = "fixed";
+        input.style.opacity = "0";
+        document.body.appendChild(input);
+        input.select();
+
+        var copied = false;
+        try {
+          copied = document.execCommand("copy");
+        } catch (error) {
+          copied = false;
+        }
+
+        document.body.removeChild(input);
+        return copied;
+      }
+
+      if (window.isSecureContext && window.navigator.clipboard) {
+        return window.navigator.clipboard.writeText(text).then(function () {
+          return true;
+        }).catch(legacyCopy);
+      }
+
+      return Promise.resolve(legacyCopy());
+    }
+
+    function showPhoneButtonMessage(phoneLink, message) {
+      var label = phoneLink.querySelector("span");
+      if (!label) return;
+
+      var originalLabel = phoneLink.getAttribute("data-ae-phone-original-label") || label.textContent;
+      phoneLink.setAttribute("data-ae-phone-original-label", originalLabel);
+      phoneLink.classList.add("is-phone-confirmed");
+      label.textContent = message;
+
+      window.clearTimeout(phoneLink.aePhoneMessageTimer);
+      phoneLink.aePhoneMessageTimer = window.setTimeout(function () {
+        phoneLink.classList.remove("is-phone-confirmed");
+        label.textContent = originalLabel;
+      }, 5200);
+    }
+
     function bindPhoneLink(root) {
       var phoneLink = root.querySelector("[data-ae-phone]");
       if (!phoneLink) return;
 
-      phoneLink.addEventListener("click", function (event) {
-        event.preventDefault();
-        event.stopPropagation();
-        navigateTop(phoneLink.getAttribute("href"));
-      });
+      function handlePhonePress(event) {
+        if (typeof event.button === "number" && event.button !== 0) return;
+
+        var phoneNumber = phoneLink.getAttribute("data-ae-phone-display") ||
+          phoneLink.getAttribute("href").replace(/^tel:/, "");
+
+        showPhoneButtonMessage(
+          phoneLink,
+          isMobileDevice() ? "Открываем звонок..." : "Номер: " + phoneNumber
+        );
+
+        if (isMobileDevice()) return;
+
+        copyText(phoneNumber).then(function (copied) {
+          showPhoneButtonMessage(
+            phoneLink,
+            copied ? "Скопировано: " + phoneNumber : "Номер: " + phoneNumber
+          );
+        });
+      }
+
+      if (window.PointerEvent) {
+        phoneLink.addEventListener("pointerdown", handlePhonePress, { passive: true });
+      } else {
+        phoneLink.addEventListener("touchstart", handlePhonePress, { passive: true });
+        phoneLink.addEventListener("mousedown", handlePhonePress, { passive: true });
+      }
     }
 
     function bindYandexDestinations(root) {
