@@ -522,6 +522,80 @@
     text-decoration: none !important;
   }
 
+  #annaelle-t123 .ae-legal {
+    margin: 24px 0 0;
+    padding: 20px 4px 0;
+    border-top: 1px solid rgba(183, 122, 136, 0.18);
+    text-align: left;
+  }
+
+  #annaelle-t123 .ae-legal-kicker {
+    margin: 0 0 5px;
+    color: var(--ae-rose-dark);
+    font-size: 0.68rem;
+    font-weight: 500;
+    line-height: 1.4;
+    letter-spacing: 0;
+    text-transform: uppercase;
+  }
+
+  #annaelle-t123 .ae-legal-name {
+    margin: 0;
+    color: var(--ae-ink);
+    font-family: "Annaelle Viaoda", "Times New Roman", serif;
+    font-size: 1.08rem;
+    font-weight: 400;
+    line-height: 1.35;
+  }
+
+  #annaelle-t123 .ae-legal-list {
+    display: grid;
+    gap: 10px;
+    margin: 16px 0 0;
+  }
+
+  #annaelle-t123 .ae-legal-list > div {
+    display: grid;
+    grid-template-columns: minmax(92px, 0.8fr) minmax(0, 1.2fr);
+    gap: 16px;
+    align-items: baseline;
+  }
+
+  #annaelle-t123 .ae-legal-list dt,
+  #annaelle-t123 .ae-legal-list dd {
+    margin: 0;
+    font-family: "Annaelle Gilroy", "Segoe UI", Arial, sans-serif;
+    letter-spacing: 0;
+  }
+
+  #annaelle-t123 .ae-legal-list dt {
+    color: rgba(35, 31, 32, 0.52);
+    font-size: 0.7rem;
+    font-weight: 400;
+    line-height: 1.4;
+  }
+
+  #annaelle-t123 .ae-legal-list dd {
+    color: var(--ae-ink);
+    font-size: 0.78rem;
+    font-variant-numeric: tabular-nums;
+    font-weight: 400;
+    line-height: 1.45;
+    overflow-wrap: anywhere;
+    text-align: right;
+  }
+
+  #annaelle-t123 .ae-legal-list a,
+  #annaelle-t123 .ae-legal-list a:visited {
+    color: var(--ae-ink) !important;
+    text-decoration: none !important;
+  }
+
+  #annaelle-t123 .ae-legal-list a:hover,
+  #annaelle-t123 .ae-legal-list a:focus-visible {
+    color: var(--ae-rose-dark) !important;
+  }
+
   #annaelle-t123 .ae-copyright {
     display: flex;
     align-items: center;
@@ -837,6 +911,25 @@
         data-ae-lon="69.260916"
         data-ae-name="Annaelle, ул. Шота Руставели д. 33"
       >Открыть выбранный адрес в Яндекс Картах</a>
+
+      <section class="ae-legal" id="legal-details" aria-labelledby="ae-legal-title">
+        <p class="ae-legal-kicker">Юридическая информация</p>
+        <h3 class="ae-legal-name" id="ae-legal-title">ИП JUKOVA ANNA ALEKSEYEVNA</h3>
+        <dl class="ae-legal-list">
+          <div>
+            <dt>Регистрация</dt>
+            <dd>№ 7265086 от 11.11.2025</dd>
+          </div>
+          <div>
+            <dt>Место деятельности</dt>
+            <dd>Ташкент, Узбекистан</dd>
+          </div>
+          <div>
+            <dt>Телефон</dt>
+            <dd><a href="tel:+998505403825" aria-label="Позвонить по номеру +998 50 540 38 25">+998 50 540 38 25</a></dd>
+          </div>
+        </dl>
+      </section>
 
       <p class="ae-copyright">
         <span>Annaelle</span>
